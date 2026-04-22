@@ -2009,7 +2009,154 @@ function submitCarePlus() {
     </div>`;
 }
  
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeChat(); closeBooking(); closeDonate(); closeCarePlus(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeChat(); closeBooking(); closeDonate(); closeCarePlus(); closeMatchModal(); } });
+ 
+// ─── MATCH ME MODAL ───────────────────────
+function openMatchModal() {
+  const heroVal = document.getElementById('aiSearchInput').value.trim();
+  const modalInput = document.getElementById('matchInput');
+  if (heroVal) { modalInput.value = heroVal; updateMatchConfidence(heroVal); }
+  document.getElementById('matchModal').classList.add('open');
+}
+function closeMatchModal() { document.getElementById('matchModal').classList.remove('open'); }
+ 
+// Confidence scoring engine
+const CONFIDENCE_SIGNALS = [
+  { pattern: /\b(pain|ache|hurt|sore|discomfort)\b/i, label: 'Symptom', pts: 10 },
+  { pattern: /\b(fever|temperature|chills)\b/i, label: 'Fever/Temp', pts: 10 },
+  { pattern: /\b(chest|stomach|abdomen|head|back|knee|shoulder|hip|neck|throat|eye|ear)\b/i, label: 'Body location', pts: 12 },
+  { pattern: /\b(chronic|acute|severe|mild|moderate|sudden|gradual|recurring|constant)\b/i, label: 'Severity/type', pts: 10 },
+  { pattern: /\b(weeks?|months?|years?|days?|since|for \d)\b/i, label: 'Duration', pts: 12 },
+  { pattern: /\b(budget|cost|price|usd|thb|baht|dollar|affordable|insurance)\b/i, label: 'Budget', pts: 8 },
+  { pattern: /\b(bangkok|phuket|chiang mai|pattaya|hua hin|koh samui|thailand|location|near)\b/i, label: 'Location', pts: 10 },
+  { pattern: /\b(hospital|clinic|specialist|doctor|surgeon|orthop|cardio|oncol|dental|dermat|gastro|neuro|ophthal|pediatr|gynec|urol)\b/i, label: 'Provider type', pts: 12 },
+  { pattern: /\b(surgery|operation|procedure|treatment|therapy|checkup|consultation|diagnosis)\b/i, label: 'Treatment type', pts: 10 },
+  { pattern: /\b(allerg|diabet|hypertens|asthma|cancer|heart|kidney|liver|thyroid|arthritis|depression|anxiety)\b/i, label: 'Condition', pts: 14 },
+  { pattern: /\b(language|english|chinese|arabic|russian|japanese|korean|french|german)\b/i, label: 'Language pref', pts: 6 },
+  { pattern: /\b(family|children|elderly|pregnant|age \d|\d+ years? old)\b/i, label: 'Patient profile', pts: 8 },
+];
+ 
+const HINTS_BY_RANGE = [
+  { max: 20,  hints: ['Try adding a symptom (e.g. stomach pain, dizziness)', 'Mention a body area or condition', 'Describe what you need help with'] },
+  { max: 45,  hints: ['Add duration (e.g. "for 2 weeks")', 'Mention severity (mild, severe)', 'Include your preferred location in Thailand'] },
+  { max: 70,  hints: ['Add your budget range for better matches', 'Specify provider type (hospital, clinic, specialist)', 'Include any diagnosis or known condition'] },
+  { max: 90,  hints: ['Almost perfect — add language preference if needed', 'Mention any preferred facility accreditation (JCI, etc.)'] },
+  { max: 100, hints: [] },
+];
+ 
+function scoreText(text) {
+  if (!text || text.trim().length < 3) return 0;
+  let score = 0;
+  const matched = new Set();
+  // Base score from length/words
+  const words = text.trim().split(/\s+/).length;
+  score += Math.min(words * 2.5, 20); // up to 20 pts for length
+  CONFIDENCE_SIGNALS.forEach(sig => {
+    if (sig.pattern.test(text) && !matched.has(sig.label)) {
+      score += sig.pts;
+      matched.add(sig.label);
+    }
+  });
+  return Math.min(Math.round(score), 100);
+}
+ 
+function getColor(pct) {
+  if (pct < 30) return '#e53e3e';
+  if (pct < 55) return '#f59e0b';
+  if (pct < 75) return '#3b82f6';
+  return '#22c55e';
+}
+ 
+function getLabel(pct) {
+  if (pct < 15) return 'Add details to improve match quality';
+  if (pct < 30) return 'Low confidence — add more symptoms or needs';
+  if (pct < 55) return 'Fair — a bit more detail will help';
+  if (pct < 75) return 'Good — providers can understand your needs';
+  if (pct < 90) return 'Very good — strong matching signal';
+  return 'Excellent — highly accurate matching expected';
+}
+ 
+function applyConfidenceUI(pct, barFill, ringFill, pctEl, labelText, labelPct, hintEl, strip, badge) {
+  const color = getColor(pct);
+  const circumference = 100;
+  const dashVal = (pct / 100) * circumference;
+  if (ringFill) {
+    ringFill.style.strokeDasharray = `${dashVal} ${circumference - dashVal}`;
+    ringFill.style.stroke = color;
+  }
+  if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = color; }
+  if (barFill) { barFill.style.width = pct + '%'; barFill.style.background = color; }
+  if (labelText) labelText.textContent = getLabel(pct);
+  if (labelPct) { labelPct.textContent = pct + '% Match Confidence'; labelPct.style.color = color; }
+  if (hintEl) {
+    const range = HINTS_BY_RANGE.find(r => pct <= r.max);
+    if (range && range.hints.length) {
+      hintEl.innerHTML = range.hints.map(h => `<span class="conf-hint-chip">💡 ${h}</span>`).join('');
+    } else {
+      hintEl.innerHTML = '<span class="conf-hint-chip conf-hint-ok">✓ Great detail — ready to match!</span>';
+    }
+  }
+}
+ 
+// Hero widget confidence
+function updateConfidence(val) {
+  const pct = scoreText(val);
+  const badge = document.getElementById('confidenceBadge');
+  const strip = document.getElementById('confStrip');
+  if (!val || val.trim().length < 3) {
+    badge.style.display = 'none';
+    strip.style.display = 'none';
+    return;
+  }
+  badge.style.display = 'flex';
+  strip.style.display = 'block';
+  applyConfidenceUI(pct,
+    document.getElementById('confBarFill'),
+    document.getElementById('confRingFill'),
+    document.getElementById('confPct'),
+    document.getElementById('confLabelText'),
+    document.getElementById('confLabelPct'),
+    document.getElementById('confHints'),
+    strip, badge
+  );
+}
+ 
+// Modal confidence
+function updateMatchConfidence(val) {
+  const pct = scoreText(val);
+  const badge = document.getElementById('mConfBadge');
+  const strip = document.getElementById('mConfStrip');
+  if (!val || val.trim().length < 3) {
+    badge.style.display = 'none';
+    strip.style.display = 'none';
+    return;
+  }
+  badge.style.display = 'flex';
+  strip.style.display = 'block';
+  applyConfidenceUI(pct,
+    document.getElementById('mConfBarFill'),
+    document.getElementById('mConfRingFill'),
+    document.getElementById('mConfPct'),
+    document.getElementById('mConfLabelText'),
+    document.getElementById('mConfLabelPct'),
+    document.getElementById('mConfHints'),
+    strip, badge
+  );
+}
+ 
+function submitMatch() {
+  const val = document.getElementById('matchInput').value.trim();
+  if (!val) { alert('Please describe your medical needs first.'); return; }
+  const pct = scoreText(val);
+  document.getElementById('matchModalBody').innerHTML = `
+    <div class="booking-success">
+      <div class="success-icon">🎯</div>
+      <h3>Matching in Progress!</h3>
+      <p>Your request has been sent with a <strong style="color:${getColor(pct)}">${pct}% confidence score</strong>.<br><br>
+      Our AI is finding the best-matched providers. You'll receive personalized offers within <strong>24 hours</strong>.</p>
+      <button onclick="closeMatchModal()" style="margin-top:20px;background:#009688;color:#fff;border:none;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Done</button>
+    </div>`;
+}
  
 // ─── AROKACLUB DONATE ────────────────────
 let currentCharity = '';
