@@ -1277,7 +1277,91 @@ function submitBooking() {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeChat(); closeBooking(); } });
+
+// ─── CARE PLUS ───────────────────────────
+let currentPkg = '';
+function openCarePlus(pkg, price) {
+  currentPkg = pkg;
+  document.getElementById('cpModalTitle').textContent = `Care Plus ${pkg}`;
+  document.getElementById('cpModalPrice').textContent = `${price} USD — Add to your treatment booking`;
+  document.getElementById('cpModalBody').innerHTML = `
+    <div style="background:#f4fdfb;border:1px solid #c8e6e0;border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <span style="font-size:20px">✦</span>
+      <div><div style="font-size:13px;font-weight:600;color:#009688">Care Plus ${pkg} — ${price} USD</div><div style="font-size:12px;color:#888;margin-top:2px">Complete your details to confirm this package</div></div>
+    </div>
+    <div class="booking-field"><label>Full Name</label><input type="text" id="cpName" placeholder="Your full name"/></div>
+    <div class="booking-field"><label>Email</label><input type="email" id="cpEmail" placeholder="your@email.com"/></div>
+    <div class="booking-field"><label>Phone / WhatsApp</label><input type="text" id="cpPhone" placeholder="+1 234 567 8900"/></div>
+    <div class="booking-field"><label>Treatment Already Booked</label><input type="text" id="cpTreatment" placeholder="e.g. Knee replacement at SLC Hospital"/></div>
+    <div class="booking-field"><label>Preferred Care Partner</label>
+      <select id="cpDMC"><option value="">No preference</option><option>DTH Travel (Recommended)</option><option>Asia DMC</option></select>
+    </div>
+    <div class="booking-field"><label>Travel Dates</label><input type="text" id="cpDates" placeholder="e.g. May 10 – May 25, 2025"/></div>
+    <div class="booking-field"><label>Additional Notes</label><textarea id="cpNotes" rows="3" placeholder="Number of companions, dietary needs, special requirements…"></textarea></div>
+    <button class="booking-submit" onclick="submitCarePlus()">Confirm Care Plus ${pkg}</button>`;
+  document.getElementById('carePlusModal').classList.add('open');
+}
+function closeCarePlus() { document.getElementById('carePlusModal').classList.remove('open'); }
+function submitCarePlus() {
+  const name  = document.getElementById('cpName').value.trim();
+  const email = document.getElementById('cpEmail').value.trim();
+  if (!name || !email) { alert('Please fill in your name and email.'); return; }
+  document.getElementById('cpModalBody').innerHTML = `
+    <div class="booking-success">
+      <div class="success-icon">✅</div>
+      <h3>Care Plus ${currentPkg} Selected!</h3>
+      <p>Your Care Plus <strong>${currentPkg}</strong> package request has been submitted.<br><br>
+      Our team will contact <strong>${escH(email)}</strong> within 24 hours to coordinate your full journey.</p>
+      <button onclick="closeCarePlus()" style="margin-top:20px;background:#009688;color:#fff;border:none;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Done</button>
+    </div>`;
+}
+ 
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeChat(); closeBooking(); closeDonate(); closeCarePlus(); } });
+ 
+// ─── AROKACLUB DONATE ────────────────────
+let currentCharity = '';
+function openDonate(name, icon) {
+  currentCharity = name;
+  document.getElementById('donateName').textContent = `Donate to ${name} ${icon}`;
+  document.getElementById('donateAmt').value = '';
+  document.getElementById('donateCalc').innerHTML = `<div style="font-size:13px;color:#555">Enter points above to see donation value</div>`;
+  document.getElementById('donateBody').querySelector('.booking-submit') && null;
+  // Reset body in case it was previously a success screen
+  if (!document.getElementById('donateAmt')) {
+    document.getElementById('donateBody').innerHTML = `
+      <div class="points-display"><div class="big">12,500</div><div class="label">Your Available Points</div></div>
+      <div class="booking-field"><label>Points to Donate</label><input type="number" id="donateAmt" placeholder="Min. 1,000 points" min="1000" step="1000" oninput="calcDonate()"/></div>
+      <div style="background:#f4fdfb;border:1px solid #c8e6e0;border-radius:10px;padding:14px;text-align:center" id="donateCalc"><div style="font-size:13px;color:#555">Enter points above to see donation value</div></div>
+      <div class="booking-field"><label>Your Name (optional)</label><input type="text" id="donateName2" placeholder="Anonymous"/></div>
+      <button class="booking-submit" onclick="submitDonate()" style="background:linear-gradient(120deg,#f59e0b,#fcd34d);color:#1a1a1a">💚 Confirm Donation</button>`;
+  }
+  document.getElementById('donateModal').classList.add('open');
+}
+function closeDonate() { document.getElementById('donateModal').classList.remove('open'); }
+function calcDonate() {
+  const pts = parseInt(document.getElementById('donateAmt').value) || 0;
+  const thb = Math.floor(pts / 1000) * 100;
+  const el  = document.getElementById('donateCalc');
+  if (pts < 1000) {
+    el.innerHTML = `<div style="font-size:13px;color:#e53e3e">Minimum 1,000 points required</div>`;
+  } else {
+    el.innerHTML = `<div style="font-size:13px;color:#555;margin-bottom:6px">${pts.toLocaleString()} points =</div><div style="font-size:26px;font-weight:700;color:#009688">THB ${thb.toLocaleString()}</div><div style="font-size:11px;color:#aaa;margin-top:4px">donated to ${currentCharity}</div>`;
+  }
+}
+function submitDonate() {
+  const pts  = parseInt(document.getElementById('donateAmt').value) || 0;
+  if (pts < 1000) { alert('Minimum 1,000 points required.'); return; }
+  const thb  = Math.floor(pts / 1000) * 100;
+  document.getElementById('donateBody').innerHTML = `
+    <div class="booking-success">
+      <div class="success-icon">💚</div>
+      <h3>Thank You!</h3>
+      <p>You've donated <strong>${pts.toLocaleString()} points</strong> (THB ${thb.toLocaleString()}) to <strong>${currentCharity}</strong>.<br><br>Your generosity makes a real difference. Your remaining balance will be updated shortly.</p>
+      <button onclick="closeDonate()" style="margin-top:20px;background:#009688;color:#fff;border:none;border-radius:8px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Done</button>
+    </div>`;
+}
 </script>
 <style>@keyframes dot{0%,80%,100%{opacity:.2}40%{opacity:1}}</style>
 </body>
 </html>
+ 
