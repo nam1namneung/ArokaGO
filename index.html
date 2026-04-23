@@ -336,7 +336,7 @@ body {
 .onboard-title { font-size: 18px; font-weight: 600; color: #1a1a1a; }
 .onboard-desc { font-size: 13px; color: #777; margin-top: 8px; line-height: 1.6; }
 .onboard-secure { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; color: #aaa; margin-top: 24px; }
-
+  
 /* AROKACLUB */
 .club-section { background: linear-gradient(160deg, #0a1628 0%, #0d2137 60%, #0a2a22 100%); padding: 80px 40px; }
 .club-hero { max-width: 1180px; margin: 0 auto 60px; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
@@ -381,24 +381,38 @@ body {
 .earn-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.55; }
 .earn-highlight { font-size: 22px; font-weight: 700; color: #f59e0b; margin: 8px 0 4px; }
  
-/* DONATE */
-.donate-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 1180px; margin: 0 auto; }
-.donate-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 22px 20px; }
-.donate-icon { font-size: 28px; margin-bottom: 10px; }
-.donate-name { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-.donate-name-th { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
-.donate-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 16px; }
-.donate-min { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
-.btn-donate { width: 100%; background: rgba(245,158,11,0.15); border: 1px solid #f59e0b; color: #f59e0b; border-radius: 8px; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background .15s; }
-.btn-donate:hover { background: rgba(245,158,11,0.3); }
+/* REDEEM */
+.redeem-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; max-width: 1180px; margin-left: auto; margin-right: auto; }
+.redeem-filter-btn { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); cursor: pointer; transition: all .15s; font-family: inherit; }
+.redeem-filter-btn.active, .redeem-filter-btn:hover { background: #009688; color: #fff; border-color: #009688; }
+.redeem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 1180px; margin: 0 auto; }
+.redeem-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 22px 20px; display: flex; flex-direction: column; gap: 0; transition: border-color .2s, transform .2s; position: relative; overflow: hidden; }
+.redeem-card:hover { border-color: rgba(245,158,11,0.5); transform: translateY(-3px); }
+.redeem-card.exclusive { border-color: rgba(192,160,60,0.4); background: rgba(192,160,60,0.07); }
+.redeem-card.exclusive::before { content: 'Gold+'; position: absolute; top: 12px; right: 12px; background: linear-gradient(120deg,#c0a03c,#f0c040); color: #1a1a1a; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 10px; letter-spacing: .05em; }
+.redeem-icon { font-size: 28px; margin-bottom: 10px; }
+.redeem-provider { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #4db6ac; margin-bottom: 4px; }
+.redeem-name { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+.redeem-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 14px; flex: 1; }
+.redeem-cost-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 10px 12px; background: rgba(255,255,255,0.06); border-radius: 8px; }
+.redeem-pts { font-size: 16px; font-weight: 700; color: #f59e0b; }
+.redeem-value { font-size: 11px; color: rgba(255,255,255,0.4); text-align: right; }
+.redeem-value strong { display: block; font-size: 13px; color: rgba(255,255,255,0.7); }
+.btn-redeem { width: 100%; background: rgba(245,158,11,0.15); border: 1px solid #f59e0b; color: #f59e0b; border-radius: 8px; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
+.btn-redeem:hover { background: #f59e0b; color: #1a1a1a; }
+.btn-redeem:disabled { opacity: .4; cursor: not-allowed; border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
  
-/* DONATE MODAL */
-.donate-modal { background: #fff; border-radius: 14px; width: 420px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
-.donate-modal-header { background: linear-gradient(120deg,#0a1628,#0d2137); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
-.donate-modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-.points-display { text-align: center; padding: 16px; background: #f4fdfb; border-radius: 10px; border: 1px solid #c8e6e0; }
-.points-display .big { font-size: 32px; font-weight: 700; color: #009688; }
-.points-display .label { font-size: 12px; color: #888; margin-top: 2px; }
+/* REDEEM MODAL */
+.redeem-modal { background: #fff; border-radius: 14px; width: 440px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+.redeem-modal-header { background: linear-gradient(120deg,#0a1628,#00796b); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+.redeem-modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.redeem-summary { background: #f4fdfb; border: 1px solid #c8e6e0; border-radius: 10px; padding: 16px; }
+.redeem-summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #555; padding: 4px 0; }
+.redeem-summary-row.total { font-weight: 700; font-size: 15px; color: #1a1a1a; border-top: 1px solid #e0f2ef; margin-top: 8px; padding-top: 10px; }
+.redeem-summary-row.total span:last-child { color: #009688; }
+.points-bal { text-align: center; padding: 14px; background: linear-gradient(120deg,#0a1628,#0d2137); border-radius: 10px; }
+.points-bal .num { font-size: 28px; font-weight: 700; color: #f59e0b; line-height: 1; }
+.points-bal .lbl { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; }
  
 @media (max-width: 900px) {
   .tiers-grid { grid-template-columns: repeat(2,1fr); }
@@ -1240,8 +1254,8 @@ footer { background: #0d0d0d; color: rgba(255,255,255,0.55); padding: 52px 40px 
     </div>
   </div>
 </div>
- 
-<!-- AROKACLUB LOYALTY SECTION -->
+  
+ <!-- AROKACLUB LOYALTY SECTION -->
 <section class="club-section" id="arokaclub">
  
   <!-- Hero / Member Card -->
@@ -1268,7 +1282,7 @@ footer { background: #0d0d0d; color: rgba(255,255,255,0.55); padding: 52px 40px 
         </div>
         <div>
           <div class="club-pts-num">5,000</div>
-          <div class="club-pts-label">Points Donated</div>
+          <div class="club-pts-label">Points Redeemed</div>
         </div>
       </div>
       <div class="club-progress-wrap">
@@ -1372,73 +1386,195 @@ footer { background: #0d0d0d; color: rgba(255,255,255,0.55); padding: 52px 40px 
     </div>
   </div>
  
-  <!-- Donate Points -->
-  <div style="max-width:1180px;margin:0 auto">
-    <div class="club-section-title">💚 Donate Your Points</div>
-    <div class="club-section-sub">Convert your ArokaClub points into meaningful donations. Every 1,000 points = 100 THB donated.</div>
-    <div class="donate-grid">
+  <!-- Redeem Points -->
+  <div style="max-width:1180px;margin:0 auto 20px">
+    <div class="club-section-title">🎁 Redeem Your Points</div>
+    <div class="club-section-sub">Use your ArokaClub points for real discounts at our verified medical provider partners across Thailand.</div>
+  </div>
  
-      <div class="donate-card">
-        <div class="donate-icon">🪞</div>
-        <div class="donate-name">The Mirror Foundation</div>
-        <div class="donate-name-th">มูลนิธิกระจกเงา</div>
-        <div class="donate-desc">Supporting underprivileged communities, human trafficking victims, and missing persons through education, rehabilitation, and social welfare.</div>
-        <div class="donate-min">Minimum donation: 1,000 points</div>
-        <button class="btn-donate" onclick="openDonate('The Mirror Foundation','🪞')">Donate Points</button>
+  <!-- Category Filters -->
+  <div class="redeem-filters">
+    <button class="redeem-filter-btn active" onclick="filterRedeem(this,'all')">All Rewards</button>
+    <button class="redeem-filter-btn" onclick="filterRedeem(this,'dental')">🦷 Dental</button>
+    <button class="redeem-filter-btn" onclick="filterRedeem(this,'aesthetic')">✨ Aesthetic</button>
+    <button class="redeem-filter-btn" onclick="filterRedeem(this,'checkup')">🩺 Check-up</button>
+    <button class="redeem-filter-btn" onclick="filterRedeem(this,'wellness')">🌿 Wellness</button>
+    <button class="redeem-filter-btn" onclick="filterRedeem(this,'hospital')">🏥 Hospital</button>
+    <button class="redeem-filter-btn" onclick="filterRedeem(this,'interpreter')">🗣️ Interpreter</button>
+  </div>
+ 
+  <div class="redeem-grid" id="redeemGrid">
+ 
+    <!-- 1 -->
+    <div class="redeem-card" data-cat="dental">
+      <div class="redeem-icon">🦷</div>
+      <div class="redeem-provider">SLC Hospital · Navamin 9</div>
+      <div class="redeem-name">Dental Consultation — Free</div>
+      <div class="redeem-desc">Redeem for a complimentary dental consultation at any partner dental clinic. Covers initial exam and X-ray (1 film).</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">1,000 pts</div>
+        <div class="redeem-value"><strong>THB 800</strong> value</div>
       </div>
- 
-      <div class="donate-card">
-        <div class="donate-icon">🐘</div>
-        <div class="donate-name">Elephant Conservation Thailand</div>
-        <div class="donate-name-th">มูลนิธิอนุรักษ์ช้างไทย</div>
-        <div class="donate-desc">Protecting Thailand's elephants through rescue, habitat preservation, and sustainable tourism that prioritises animal welfare.</div>
-        <div class="donate-min">Minimum donation: 1,000 points</div>
-        <button class="btn-donate" onclick="openDonate('Elephant Conservation Thailand','🐘')">Donate Points</button>
-      </div>
- 
-      <div class="donate-card">
-        <div class="donate-icon">🏥</div>
-        <div class="donate-name">Thai Red Cross Society</div>
-        <div class="donate-name-th">สภากาชาดไทย</div>
-        <div class="donate-desc">Providing humanitarian aid, disaster relief, blood donation services, and healthcare support to vulnerable populations across Thailand.</div>
-        <div class="donate-min">Minimum donation: 1,000 points</div>
-        <button class="btn-donate" onclick="openDonate('Thai Red Cross Society','🏥')">Donate Points</button>
-      </div>
- 
+      <button class="btn-redeem" onclick="openRedeem('Dental Consultation — Free','🦷','1,000','THB 800','SLC Hospital / Navamin 9 Hospital','dental')">Redeem Now</button>
     </div>
+ 
+    <!-- 2 -->
+    <div class="redeem-card" data-cat="dental">
+      <div class="redeem-icon">😁</div>
+      <div class="redeem-provider">All Partner Dental Clinics</div>
+      <div class="redeem-name">Teeth Whitening — 20% Off</div>
+      <div class="redeem-desc">Get 20% off professional in-clinic teeth whitening at any ArokaGO-verified dental clinic across Thailand.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">2,500 pts</div>
+        <div class="redeem-value"><strong>THB 1,500</strong> saving</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Teeth Whitening — 20% Off','😁','2,500','THB 1,500 saving','All Partner Dental Clinics','dental')">Redeem Now</button>
+    </div>
+ 
+    <!-- 3 -->
+    <div class="redeem-card" data-cat="checkup">
+      <div class="redeem-icon">🩺</div>
+      <div class="redeem-provider">CGH Hospital · Vibhavadi</div>
+      <div class="redeem-name">Annual Health Check-up — 15% Off</div>
+      <div class="redeem-desc">15% discount on a comprehensive annual health screening package including blood panel, chest X-ray, and physician consultation.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">3,000 pts</div>
+        <div class="redeem-value"><strong>THB 2,250</strong> saving</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Annual Health Check-up — 15% Off','🩺','3,000','THB 2,250 saving','CGH Hospital / Vibhavadi Hospital','checkup')">Redeem Now</button>
+    </div>
+ 
+    <!-- 4 -->
+    <div class="redeem-card" data-cat="aesthetic">
+      <div class="redeem-icon">✨</div>
+      <div class="redeem-provider">Partner Aesthetic Clinics</div>
+      <div class="redeem-name">Facial Treatment — THB 500 Off</div>
+      <div class="redeem-desc">THB 500 credit toward any facial or skin treatment at verified aesthetic and cosmetic partner clinics. No minimum spend.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">1,500 pts</div>
+        <div class="redeem-value"><strong>THB 500</strong> credit</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Facial Treatment — THB 500 Off','✨','1,500','THB 500 credit','Partner Aesthetic Clinics','aesthetic')">Redeem Now</button>
+    </div>
+ 
+    <!-- 5 -->
+    <div class="redeem-card exclusive" data-cat="aesthetic">
+      <div class="redeem-icon">💉</div>
+      <div class="redeem-provider">Partner Aesthetic Clinics</div>
+      <div class="redeem-name">Botox / Filler — 25% Off</div>
+      <div class="redeem-desc">25% off a single Botox or dermal filler session at verified cosmetic clinics. Gold tier and above only.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">5,000 pts</div>
+        <div class="redeem-value"><strong>THB 3,000+</strong> saving</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Botox / Filler — 25% Off','💉','5,000','THB 3,000+ saving','Partner Aesthetic Clinics','aesthetic')">Redeem Now</button>
+    </div>
+ 
+    <!-- 6 -->
+    <div class="redeem-card" data-cat="wellness">
+      <div class="redeem-icon">🌿</div>
+      <div class="redeem-provider">Well Hotels · Spa Centers</div>
+      <div class="redeem-name">Spa Day Pass — THB 1,000 Off</div>
+      <div class="redeem-desc">THB 1,000 discount on a full-day spa or wellness package at ArokaGO-partnered well-hotels and wellness centres.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">2,000 pts</div>
+        <div class="redeem-value"><strong>THB 1,000</strong> credit</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Spa Day Pass — THB 1,000 Off','🌿','2,000','THB 1,000 credit','Well Hotels / Spa Centers','wellness')">Redeem Now</button>
+    </div>
+ 
+    <!-- 7 -->
+    <div class="redeem-card" data-cat="hospital">
+      <div class="redeem-icon">🏥</div>
+      <div class="redeem-provider">All Partner Hospitals</div>
+      <div class="redeem-name">OPD Consultation — THB 300 Off</div>
+      <div class="redeem-desc">THB 300 off any outpatient (OPD) specialist consultation at all ArokaGO-verified hospital partners.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">800 pts</div>
+        <div class="redeem-value"><strong>THB 300</strong> credit</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('OPD Consultation — THB 300 Off','🏥','800','THB 300 credit','All Partner Hospitals','hospital')">Redeem Now</button>
+    </div>
+ 
+    <!-- 8 -->
+    <div class="redeem-card exclusive" data-cat="hospital">
+      <div class="redeem-icon">🔬</div>
+      <div class="redeem-provider">SLC Hospital · Krung Siam</div>
+      <div class="redeem-name">Lab Tests Package — 30% Off</div>
+      <div class="redeem-desc">30% discount on a comprehensive laboratory test bundle (CBC, liver, kidney, lipid profile). Gold tier and above only.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">4,000 pts</div>
+        <div class="redeem-value"><strong>THB 1,800</strong> saving</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Lab Tests Package — 30% Off','🔬','4,000','THB 1,800 saving','SLC Hospital / Krung Siam Medical Centre','hospital')">Redeem Now</button>
+    </div>
+ 
+    <!-- 9 -->
+    <div class="redeem-card" data-cat="interpreter">
+      <div class="redeem-icon">🗣️</div>
+      <div class="redeem-provider">ArokaGO Interpreter Network</div>
+      <div class="redeem-name">Medical Interpreter — 1 Free Session</div>
+      <div class="redeem-desc">One complimentary medical interpreter session (up to 2 hours) for any hospital or clinic visit. All languages available.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">2,000 pts</div>
+        <div class="redeem-value"><strong>THB 1,500</strong> value</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Medical Interpreter — 1 Free Session','🗣️','2,000','THB 1,500 value','ArokaGO Interpreter Network','interpreter')">Redeem Now</button>
+    </div>
+ 
+    <!-- 10 -->
+    <div class="redeem-card" data-cat="wellness">
+      <div class="redeem-icon">🧘</div>
+      <div class="redeem-provider">Wellness Centers</div>
+      <div class="redeem-name">Traditional Thai Massage — Free</div>
+      <div class="redeem-desc">One complimentary 60-minute traditional Thai massage at partner wellness centres. Valid for recovery and post-treatment guests.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">1,200 pts</div>
+        <div class="redeem-value"><strong>THB 900</strong> value</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Traditional Thai Massage — Free','🧘','1,200','THB 900 value','Partner Wellness Centers','wellness')">Redeem Now</button>
+    </div>
+ 
+    <!-- 11 -->
+    <div class="redeem-card exclusive" data-cat="checkup">
+      <div class="redeem-icon">❤️</div>
+      <div class="redeem-provider">Vibhavadi · Navamin 9</div>
+      <div class="redeem-name">Cardiac Screening Package — 20% Off</div>
+      <div class="redeem-desc">20% off a full cardiac screening (ECG, echocardiogram, stress test). Gold tier and above. Includes physician report.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">6,000 pts</div>
+        <div class="redeem-value"><strong>THB 5,000+</strong> saving</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Cardiac Screening Package — 20% Off','❤️','6,000','THB 5,000+ saving','Vibhavadi Hospital / Navamin 9 Hospital','checkup')">Redeem Now</button>
+    </div>
+ 
+    <!-- 12 -->
+    <div class="redeem-card" data-cat="dental">
+      <div class="redeem-icon">🪥</div>
+      <div class="redeem-provider">All Partner Dental Clinics</div>
+      <div class="redeem-name">Dental Cleaning — Free</div>
+      <div class="redeem-desc">One complimentary professional dental scaling and polishing session at any verified partner dental clinic.</div>
+      <div class="redeem-cost-row">
+        <div class="redeem-pts">1,500 pts</div>
+        <div class="redeem-value"><strong>THB 1,200</strong> value</div>
+      </div>
+      <button class="btn-redeem" onclick="openRedeem('Dental Cleaning — Free','🪥','1,500','THB 1,200 value','All Partner Dental Clinics','dental')">Redeem Now</button>
+    </div>
+ 
   </div>
 </section>
  
-<!-- DONATE MODAL -->
-<div class="chat-modal-overlay" id="donateModal" onclick="if(event.target===this)closeDonate()" style="z-index:2100;">
-  <div class="donate-modal">
-    <div class="donate-modal-header">
+<!-- REDEEM MODAL -->
+<div class="chat-modal-overlay" id="redeemModal" onclick="if(event.target===this)closeRedeem()" style="z-index:2100;">
+  <div class="redeem-modal">
+    <div class="redeem-modal-header">
       <div>
-        <div style="font-size:14px;font-weight:700;color:#fff" id="donateName">Donate to Charity</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px">ArokaClub Points Donation</div>
+        <div style="font-size:15px;font-weight:700;color:#fff" id="redeemModalTitle">Redeem Reward</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px" id="redeemModalSub"></div>
       </div>
-      <button class="chat-close" onclick="closeDonate()">✕</button>
+      <button class="chat-close" onclick="closeRedeem()">✕</button>
     </div>
-    <div class="donate-modal-body" id="donateBody">
-      <div class="points-display">
-        <div class="big">12,500</div>
-        <div class="label">Your Available Points</div>
-      </div>
-      <div class="booking-field">
-        <label>Points to Donate</label>
-        <input type="number" id="donateAmt" placeholder="Min. 1,000 points" min="1000" step="1000" oninput="calcDonate()"/>
-      </div>
-      <div style="background:#f4fdfb;border:1px solid #c8e6e0;border-radius:10px;padding:14px;text-align:center" id="donateCalc">
-        <div style="font-size:13px;color:#555">Enter points above to see donation value</div>
-      </div>
-      <div class="booking-field">
-        <label>Your Name (optional)</label>
-        <input type="text" id="donateName2" placeholder="Anonymous"/>
-      </div>
-      <button class="booking-submit" onclick="submitDonate()" style="background:linear-gradient(120deg,#f59e0b,#fcd34d);color:#1a1a1a">
-        💚 Confirm Donation
-      </button>
-    </div>
+    <div class="redeem-modal-body" id="redeemModalBody"></div>
   </div>
 </div>
   
